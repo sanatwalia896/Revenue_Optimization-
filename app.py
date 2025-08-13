@@ -260,53 +260,6 @@ if st.sidebar.button("Predict and Optimize Price"):
                         f"Recommendation: Decrease price to ₹{optimized_price:.2f}"
                     )
 
-# Batch processing
-st.sidebar.markdown("---")
-st.sidebar.subheader("Batch Processing")
-uploaded_file = st.sidebar.file_uploader("Upload CSV with user data", type="csv")
-
-if uploaded_file is not None:
-    try:
-        batch_df = pd.read_csv(uploaded_file)
-
-        if "Days Installed Before Last Purchase" not in batch_df.columns:
-            batch_df["Date of Purchase"] = pd.to_datetime(batch_df["Date of Purchase"])
-            batch_df["Date of Install"] = pd.to_datetime(batch_df["Date of Install"])
-            batch_df["Days Installed Before Last Purchase"] = (
-                batch_df["Date of Purchase"] - batch_df["Date of Install"]
-            ).dt.days
-
-        results = []
-
-        for _, row in batch_df.iterrows():
-            input_df = pd.DataFrame([row])
-            processed = process_data(input_df)
-            if processed is not None:
-                pred_price = predict_price(processed)
-                if pred_price is not None:
-                    opt_price, rev_before, rev_after = optimize_price(pred_price)
-                    input_df["Predicted Price"] = pred_price
-                    input_df["Optimized Price"] = opt_price
-                    input_df["Original Revenue"] = rev_before
-                    input_df["Optimized Revenue"] = rev_after
-                    input_df["Price Change (%)"] = (
-                        (opt_price - pred_price) / pred_price
-                    ) * 100
-                    results.append(input_df)
-
-        if results:
-            result_df = pd.concat(results, ignore_index=True)
-            st.subheader("Batch Results")
-            st.dataframe(result_df)
-
-            # Download button
-            csv = result_df.to_csv(index=False).encode("utf-8")
-            st.download_button(
-                "Download Results as CSV", csv, "optimized_prices.csv", "text/csv"
-            )
-
-    except Exception as e:
-        st.error(f"Error processing batch file: {str(e)}")
 
 # About section
 st.sidebar.markdown("---")
