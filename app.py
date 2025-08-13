@@ -11,7 +11,7 @@ from scipy.optimize import minimize
 st.set_page_config(page_title="Revenue Optimization of in app purchases", layout="wide")
 
 # Application title
-st.title("Game Purchase Price Prediction and Optimization")
+st.title("Revenue Optimization of in app purchases")
 st.write(
     "This app predicts and optimizes the price for in-game purchases based on user and behavioral features."
 )
