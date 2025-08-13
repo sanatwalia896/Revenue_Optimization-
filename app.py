@@ -8,7 +8,7 @@ from scipy.optimize import minimize
 
 
 # Set page title and layout
-st.set_page_config(page_title="Price Prediction and Optimization App", layout="wide")
+st.set_page_config(page_title="Revenue Optimization of in app purchases", layout="wide")
 
 # Application title
 st.title("Game Purchase Price Prediction and Optimization")
